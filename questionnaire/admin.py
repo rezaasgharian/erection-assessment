@@ -12,9 +12,10 @@ class AverageChangeList(ChangeList):
     def get_results(self, *args, **kwargs):
         super(AverageChangeList, self).get_results(*args, **kwargs)
         avg = self.result_list.aggregate(sum=Sum('average'))
-        self.average = f"Total average : " + "{:.2f}".format(
-            avg['sum'] / Questionnaire.objects.count())
-
+        if Questionnaire.objects.count() > 0:
+            self.average = f"Total average : " + "{:.2f}".format(avg['sum'] / Questionnaire.objects.count())
+        else:
+            self.average = "" 
 
 class QuestionnaireAdmin(admin.ModelAdmin):
     list_display = ('id', 'confidence', 'penetration', 'intercourse', 'completion', 'satisfaction', 'score')
